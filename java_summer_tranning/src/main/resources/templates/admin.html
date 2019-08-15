@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="javascript" href="/js/script.js">
+
+
+    <!-- Start- Thanh search css -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <!-- End- Thanh search css -->
+
+</head>
+<body>
+
+<div class="container" style="margin-top: 35px">
+    <!--thanh Search-->
+    <form>
+        <input type="text" name="search" placeholder="Search..." id="search" class="form-control">
+    </form>
+    <!--thanh Search-->
+
+    <!--tạo bảng-->
+    <table class="table table-bordered table-sm" id="employee_table">
+<!--        <thead>-->
+            <tr>
+                <th>STT</th>
+<!--                <th>Name</th>-->
+                <th>Lí do</th>
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
+                <th>Ghi chú</th>
+                <th>Duyệt</th>
+            </tr>
+<!--        </thead>-->
+
+        <tbody>
+            <tr th:each = "entity : ${applications}">
+                <td class="column1">1</td>
+                <td class="column2" th:text="${entity.reason}"></td>
+                <td class="column3" th:text="${entity.timeStart}"></td>
+                <td class="column4" th:text="${entity.timeEnd}"></td>
+                <td class="column5" th:text="${entity.description}"></td>
+                <td class="column5" >
+                    <p id="demo" class="show">Duyệt</p>
+                    <script>
+                        // Lấy đối tượng
+                        var a_list = document.getElementsByClassName("show");
+
+                        // Lặp và gán sự kiện
+                        for (var i = 0; i < a_list.length; i++){
+                            a_list[i].onclick = function()
+                            {
+                                document.getElementById("demo").addEventListener("click", myFunction);
+                                function myFunction(){
+                                    document.getElementById("demo").innerHTML = "Đã duyệt!";
+                                    document.getElementById("demo").style.color = "red";
+                                }
+                                return false
+                            };
+                        }
+                    </script>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <div class="btn_taodon">
+        <button>
+            <a href="#" th:href="@{/contact/add}" class="btn btn-success float-right">Tạo đơn</a>
+        </button>
+    </div>
+
+    <div class="row mt-4">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function(){
+        $('#search').keyup(function(){
+            search_table($(this).val());
+        });
+        function search_table(value){
+            $('#employee_table tr').each(function(){
+                var found = 'false';
+                $(this).each(function(){
+                    if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                    {
+                        found = 'true';
+                    }
+                });
+                if(found == 'true')
+                {
+                    $(this).show();
+                }
+                else
+                {
+                    $(this).hide();
+                }
+            });
+        }
+    });
+</script>
+
+<!--<script>-->
+<!--    document.getElementById("demo").addEventListener("click", myFunction);-->
+
+<!--    function myFunction() {-->
+<!--        document.getElementById("demo").innerHTML = "Đã duyệt!";-->
+<!--        document.getElementById("demo").style.color = "red";-->
+<!--    }-->
+<!--</script>-->
+
